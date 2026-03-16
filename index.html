@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haandi Shaandi | Uniting the Flavours of Bharat</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        terracotta: '#B83A0D',
+                        cream: '#F4EAD8',
+                        orange: '#D4581C',
+                        red: '#C22E1A',
+                        dark: '#2A1B14'
+                    },
+                    fontFamily: {
+                        heading: ['"Baloo 2"', 'cursive'],
+                        body: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS for Animations -->
+    <style>
+        /* Base Styling */
+        body {
+            background-color: #F4EAD8;
+            color: #2A1B14;
+            overflow-x: hidden;
+        }
+        ::selection {
+            background-color: #B83A0D;
+            color: #F4EAD8;
+        }
+
+        /* Hero Parallax Slow Zoom */
+        .animate-slow-zoom {
+            animation: slowZoom 20s ease-in-out infinite alternate;
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Scroll Reveal Animations (Replaces Framer Motion) */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .is-revealed {
+            opacity: 1 !important;
+            transform: translate(0, 0) scale(1) !important;
+        }
+
+        /* Stagger Delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Steam Animation */
+        @keyframes steam {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-120px) translateX(-20px) scale(3); opacity: 0; }
+        }
+        .steam-particle {
+            position: absolute;
+            bottom: 0;
+            width: 16px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(12px);
+            animation: steam 3s ease-in-out infinite;
+        }
+        .steam-1 { left: 40%; animation-delay: 0.8s; }
+        .steam-2 { left: 50%; animation-delay: 1.6s; }
+        .steam-3 { left: 60%; animation-delay: 2.4s; }
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            transform: translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #mobile-menu.menu-open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Navbar Transition */
+        #navbar {
+            transition: all 0.3s ease-in-out;
+        }
+        #navbar.scrolled {
+            background-color: #F4EAD8;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        #navbar.scrolled .nav-text {
+            color: #2A1B14;
+        }
+        #navbar.scrolled .brand-text {
+            color: #B83A0D;
+        }
+    </style>
+</head>
+<body class="font-body">
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed w-full z-50 py-5">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="brand-text font-heading text-3xl font-bold text-cream transition-colors duration-300">
+                Haandi Shaandi
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#experience" class="nav-text font-medium text-cream hover:text-orange transition-colors duration-300">Experience</a>
+                <a href="#menu" class="nav-text font-medium text-cream hover:text-orange transition-colors duration-300">Menu</a>
+                <a href="#story" class="nav-text font-medium text-cream hover:text-orange transition-colors duration-300">Story</a>
+                <a href="#location" class="nav-text font-medium text-cream hover:text-orange transition-colors duration-300">Location</a>
+                <a href="#waitlist" class="bg-terracotta text-cream px-6 py-2 rounded-full font-medium hover:bg-red transition-colors shadow-lg">
+                    Join Waitlist
+                </a>
+            </div>
+
+            <!-- Mobile Nav Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden nav-text text-cream transition-colors duration-300">
+                <i data-lucide="menu" id="menu-icon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-cream shadow-lg py-4 flex flex-col items-center space-y-4 md:hidden">
+            <a href="#experience" class="mobile-link text-dark font-medium text-lg">Experience</a>
+            <a href="#menu" class="mobile-link text-dark font-medium text-lg">Menu</a>
+            <a href="#story" class="mobile-link text-dark font-medium text-lg">Story</a>
+            <a href="#location" class="mobile-link text-dark font-medium text-lg">Location</a>
+            <a href="#waitlist" class="mobile-link bg-terracotta text-cream px-8 py-3 rounded-full font-medium">Join Waitlist</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden" id="home">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-slow-zoom"
+             style="background-image: url('https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?auto=format&fit=crop&q=80')">
+        </div>
+        <div class="absolute inset-0 bg-black/60 z-10"></div>
+
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto mt-16">
+            <h1 class="reveal-up font-heading text-5xl md:text-7xl font-bold text-cream mb-6 leading-tight">
+                Uniting the Flavours of <span class="text-orange">Bharat</span>
+            </h1>
+            
+            <p class="reveal-up delay-200 text-lg md:text-2xl text-cream/90 mb-10 max-w-2xl mx-auto">
+                Authentic dum biryanis inspired by regional Indian traditions, served hot in traditional clay haandi pots.
+            </p>
+
+            <div class="reveal-up delay-400 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="#menu" class="bg-terracotta text-cream px-8 py-4 rounded-full font-semibold text-lg hover:bg-red transition-all transform hover:scale-105 shadow-xl w-full sm:w-auto">
+                    Explore Menu
+                </a>
+                <a href="#waitlist" class="bg-transparent border-2 border-cream text-cream px-8 py-4 rounded-full font-semibold text-lg hover:bg-cream hover:text-terracotta transition-all w-full sm:w-auto">
+                    Join Waitlist
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience" class="py-24 bg-cream overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="md:w-1/2 relative reveal-left">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-square max-w-md mx-auto">
+                        <img src="https://images.unsplash.com/photo-1589301760014-d929f39ce9b1?auto=format&fit=crop&q=80" alt="Clay Haandi Pot" class="w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        
+                        <!-- Steam Particles -->
+                        <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-32 h-32 pointer-events-none z-10">
+                            <div class="steam-particle steam-1"></div>
+                            <div class="steam-particle steam-2"></div>
+                            <div class="steam-particle steam-3"></div>
+                        </div>
+                    </div>
+                    <!-- Decorative element -->
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-orange rounded-full -z-10 blur-2xl opacity-50"></div>
+                </div>
+
+                <div class="md:w-1/2 text-center md:text-left reveal-right">
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold text-terracotta mb-6">
+                        The Haandi Experience
+                    </h2>
+                    <p class="text-xl text-dark font-medium mb-6 italic">
+                        "Slow cooked dum biryani sealed with tradition."
+                    </p>
+                    <p class="text-dark/80 leading-relaxed mb-8">
+                        Every biryani at Haandi Shaandi is cooked and served in a traditional unglazed clay pot. The porous nature of the clay allows heat and moisture to circulate, infusing the meat and rice with an earthy aroma that metal simply cannot replicate. Sealed with dough to trap the steam (dum), the flavors are locked inside until the moment it reaches your table.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3 text-terracotta font-medium justify-center md:justify-start">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span>Authentic earthy flavor</span>
+                        </li>
+                        <li class="flex items-center space-x-3 text-terracotta font-medium justify-center md:justify-start">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span>Perfect moisture retention</span>
+                        </li>
+                        <li class="flex items-center space-x-3 text-terracotta font-medium justify-center md:justify-start">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span>Sealed fresh for every order</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAP SECTION -->
+    <section class="py-24 bg-dark text-cream overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal-up">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-orange mb-6">Biryani Across Bharat</h2>
+                <p class="text-lg text-cream/80 leading-relaxed">
+                    From royal kitchens to street-side legends — every region of India has its own biryani story. Haandi Shaandi brings these diverse, authentic flavors together under one roof.
+                </p>
+            </div>
+
+            <!-- Conceptual Map Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-5xl mx-auto" id="regions-grid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+        
+        <!-- Decorative background map lines -->
+        <svg class="absolute inset-0 w-full h-full opacity-5 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+    </section>
+
+    <!-- SERVING SIZES -->
+    <section class="py-24 bg-cream">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-terracotta mb-4">Choose Your Haandi</h2>
+                <p class="text-lg text-dark/70">Perfect portions for every appetite.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto" id="sizes-grid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="menu" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-terracotta mb-4">Our Menu</h2>
+                <p class="text-lg text-dark/70">A curated selection of India's finest regional flavors.</p>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 reveal-up" id="menu-tabs">
+                <button onclick="filterMenu('Chicken')" id="tab-Chicken" class="menu-tab px-8 py-3 rounded-full font-heading text-lg font-semibold transition-all bg-terracotta text-cream shadow-lg scale-105">Chicken</button>
+                <button onclick="filterMenu('Veg')" id="tab-Veg" class="menu-tab px-8 py-3 rounded-full font-heading text-lg font-semibold transition-all bg-cream text-dark hover:bg-orange hover:text-cream">Veg</button>
+                <button onclick="filterMenu('Curries')" id="tab-Curries" class="menu-tab px-8 py-3 rounded-full font-heading text-lg font-semibold transition-all bg-cream text-dark hover:bg-orange hover:text-cream">Curries</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto reveal-up" id="menu-grid" style="transition: opacity 0.4s;">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- WAITLIST SECTION -->
+    <section id="waitlist" class="py-24 bg-terracotta relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-red rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-orange rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform -translate-x-1/2 translate-y-1/2"></div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10 reveal-scale">
+            <div class="bg-cream rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                
+                <div class="md:w-5/12 bg-dark text-cream p-10 flex flex-col justify-center">
+                    <h3 class="font-heading text-3xl font-bold mb-4">Join the Waitlist</h3>
+                    <p class="text-cream/80 mb-8">
+                        Be the first to experience the true flavors of Bharat in Siliguri.
+                    </p>
+                    <div class="bg-orange/20 border border-orange/40 rounded-xl p-6">
+                        <p class="font-heading font-bold text-orange mb-2 flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i> Exclusive Offer
+                        </p>
+                        <p class="text-sm text-cream/90">
+                            Free Haandi Meal for the first 50 guests on our waitlist!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="md:w-7/12 p-10" id="form-container">
+                    <form id="waitlist-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-dark mb-2">Full Name</label>
+                            <input required type="text" class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-terracotta transition-all text-dark" placeholder="Your name" />
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-dark mb-2">Phone Number</label>
+                                <input required type="tel" class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-terracotta transition-all text-dark" placeholder="10-digit number" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-dark mb-2">WhatsApp Number</label>
+                                <input required type="tel" class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-terracotta transition-all text-dark" placeholder="If different" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-dark mb-2">Which biryani are you most excited for?</label>
+                            <select id="biryani-select" class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-terracotta transition-all text-dark">
+                                <!-- Populated via JS -->
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full bg-terracotta text-cream py-4 rounded-xl font-heading font-bold text-lg hover:bg-red transition-colors shadow-lg flex items-center justify-center gap-2">
+                            Join the List <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+
+                    <!-- Success Message (Hidden Initially) -->
+                    <div id="success-message" class="hidden h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
+                        <div class="w-16 h-16 bg-terracotta/10 text-terracotta rounded-full flex items-center justify-center mb-4">
+                            <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="font-heading text-2xl font-bold text-dark">You are now on the Haandi List!</h4>
+                        <p class="text-dark/70">We'll contact you via WhatsApp with your exclusive invitation soon.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- STORY SECTION -->
+    <section id="story" class="py-24 bg-cream">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="md:w-1/2 order-2 md:order-1 reveal-up">
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold text-terracotta mb-6">Our Story</h2>
+                    <p class="text-dark/80 text-lg leading-relaxed mb-6">
+                        Biryani in India is not just a dish; it is a cultural tapestry woven with spices, traditions, and history. Yet, enjoying true regional varieties often means traveling thousands of miles. 
+                    </p>
+                    <p class="text-dark/80 text-lg leading-relaxed mb-8">
+                        <strong class="text-dark">Haandi Shaandi</strong> was born from a simple idea: What if we could unite the diverse flavors of Bharat in one place? We traveled from the royal kitchens of Awadh to the spice-rich coastlines of Kerala, learning authentic recipes, sourcing regional ingredients, and perfecting the ancient art of slow-cooked dum in clay pots.
+                    </p>
+                    <div class="inline-block border-l-4 border-orange pl-6 py-2">
+                        <p class="font-heading text-2xl font-semibold text-orange italic">
+                            "Not just food, but a journey across India, served in a single Haandi."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 order-1 md:order-2 reveal-scale">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03b2184f4f0c?auto=format&fit=crop&q=80" alt="Spices and Biryani" class="w-full h-auto object-cover" />
+                        <div class="absolute inset-0 bg-terracotta/10 mix-blend-overlay"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION SECTION -->
+    <section id="location" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-heading text-4xl md:text-5xl font-bold text-terracotta mb-4">Coming Soon to Siliguri</h2>
+                <p class="text-lg text-dark/70">Get ready for a royal feast right in the heart of your city.</p>
+            </div>
+
+            <div class="bg-cream rounded-3xl p-4 md:p-8 shadow-xl max-w-5xl mx-auto relative reveal-up">
+                <div class="aspect-video w-full rounded-2xl overflow-hidden bg-gray-200 relative">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114068.51382455323!2d88.35824965352697!3d26.71616428753231!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e44114f5441d8f%3A0xbaa0cbb41e40ebbd!2sSiliguri%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="100%" 
+                        style="border: 0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="absolute inset-0"
+                    ></iframe>
+                </div>
+                <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-white px-8 py-6 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-4 w-[90%] md:w-auto">
+                    <div class="bg-terracotta/10 p-3 rounded-full text-terracotta">
+                        <i data-lucide="map-pin" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-heading font-bold text-xl text-dark">Haandi Shaandi</h4>
+                        <p class="text-dark/70">Siliguri, West Bengal, India</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL MEDIA -->
+    <section class="py-24 bg-dark overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 mb-12 text-center reveal-up">
+           <h2 class="font-heading text-4xl md:text-5xl font-bold text-cream mb-4">Join the Feast Online</h2>
+           <a href="#" class="inline-flex items-center gap-2 text-orange hover:text-cream transition-colors font-medium text-lg">
+             <i data-lucide="instagram" class="w-6 h-6"></i> @haandishaandi
+           </a>
+        </div>
+        
+        <div class="flex gap-4 px-4 overflow-x-auto pb-8 snap-x" id="social-grid">
+            <!-- Injected via JS -->
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#1C110C] text-cream pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-1">
+                <h2 class="font-heading text-3xl font-bold text-orange mb-4">Haandi Shaandi</h2>
+                <p class="text-sm text-cream/70 mb-6 leading-relaxed">
+                    Uniting the Flavours of Bharat.<br/>
+                    Authentic regional dum biryanis served in traditional clay haandi pots.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="font-heading text-xl font-semibold mb-6">Quick Links</h4>
+                <ul class="space-y-3 text-sm text-cream/70">
+                    <li><a href="#menu" class="hover:text-orange transition-colors">Explore Menu</a></li>
+                    <li><a href="#experience" class="hover:text-orange transition-colors">The Experience</a></li>
+                    <li><a href="#story" class="hover:text-orange transition-colors">Our Story</a></li>
+                    <li><a href="#waitlist" class="hover:text-orange transition-colors">Join Waitlist</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-heading text-xl font-semibold mb-6">Contact</h4>
+                <ul class="space-y-4 text-sm text-cream/70">
+                    <li class="flex items-start gap-3">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-orange flex-shrink-0 mt-1"></i>
+                        <span>Siliguri,<br/>West Bengal, India</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="phone" class="w-4 h-4 text-orange"></i>
+                        <span>+91 98765 43210</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="mail" class="w-4 h-4 text-orange"></i>
+                        <span>hello@haandishaandi.com</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-heading text-xl font-semibold mb-6">Follow Us</h4>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-orange transition-colors">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 border-t border-cream/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-cream/50">
+            <p>© <span id="current-year"></span> Haandi Shaandi. All rights reserved.</p>
+            <p class="mt-2 md:mt-0">Crafted for the Love of Biryani.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA ---
+        const menuData = [
+            { name: 'Kolkata Chicken Biryani', category: 'Chicken', desc: 'Aromatic basmati, subtle spices, tender chicken, and the signature potato.' },
+            { name: 'Hyderabadi Dum Chicken Biryani', category: 'Chicken', desc: 'Rich, spicy, and deeply flavorful, cooked in authentic kachchi dum style.' },
+            { name: 'Lucknowi Chicken Biryani', category: 'Chicken', desc: 'Mild, fragrant, and royal awadhi flavors with melt-in-the-mouth meat.' },
+            { name: 'Kerala Chicken Biryani', category: 'Chicken', desc: 'Made with short-grain kaima rice, enriched with cashew, raisins, and ghee.' },
+            { name: 'Dindigul Chicken Biryani', category: 'Chicken', desc: 'Seeraga samba rice with a distinct peppery, tangy southern flair.' },
+            { name: 'Donne Chicken Biryani', category: 'Chicken', desc: 'Karnataka style biryani cooked with fresh mint, coriander, and green chilies.' },
+            { name: 'Kashmiri Biryani', category: 'Chicken', desc: 'Infused with saffron, dry fruits, and a hint of sweetness.' },
+            
+            { name: 'Malai Paneer Biryani', category: 'Veg', desc: 'Soft paneer cubes layered with creamy, fragrant basmati rice.' },
+            { name: 'Kathal Biryani', category: 'Veg', desc: 'Jackfruit marinated in robust spices, mimicking the texture of meat perfectly.' },
+            
+            { name: 'Chicken Haandi Shaandi', category: 'Curries', desc: 'Our signature rich, slow-cooked chicken curry.' },
+            { name: 'Kathal Haandi Shaandi', category: 'Curries', desc: 'Spiced jackfruit simmered in a rich tomato-onion gravy.' },
+            { name: 'Dum-e-Fish Haandi Shaandi', category: 'Curries', desc: 'Tender fish pieces cooked gently in a mustard and yogurt blend.' },
+        ];
+
+        const regions = ['Kashmir', 'Lucknow', 'Assam', 'Kolkata', 'Hyderabad', 'Karnataka', 'Tamil Nadu', 'Kerala'];
+
+        const sizes = [
+            { name: 'Safar Haandi', weight: '350g', price: '₹199', serves: 'Serves 1', desc: 'Perfect for a solo journey of flavors.' },
+            { name: 'Mehfil Haandi', weight: '800g', price: '₹299', serves: 'Serves 2', desc: 'Share the joy with your favorite person.' },
+            { name: 'Dawaati Haandi', weight: '1200g', price: '₹499', serves: 'Serves 3', desc: 'A feast meant for family and friends.' },
+        ];
+
+        const socialImages = [
+            "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1589302168068-964664d93cb0?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80"
+        ];
+
+        // --- DOM RENDER FUNCTIONS ---
+
+        // Render Regions
+        const regionsGrid = document.getElementById('regions-grid');
+        regions.forEach((region, index) => {
+            const delay = `delay-${(index % 4) * 100}`;
+            regionsGrid.innerHTML += `
+                <div class="reveal-up ${delay} bg-cream/5 border border-orange/30 rounded-xl p-6 text-center hover:bg-orange/10 transition-colors cursor-pointer group">
+                    <i data-lucide="map-pin" class="mx-auto text-orange mb-3 group-hover:scale-110 transition-transform w-7 h-7"></i>
+                    <h3 class="font-heading text-xl font-semibold text-cream">${region}</h3>
+                </div>
+            `;
+        });
+
+        // Render Sizes
+        const sizesGrid = document.getElementById('sizes-grid');
+        sizes.forEach((size, index) => {
+            const delay = `delay-${index * 200}`;
+            sizesGrid.innerHTML += `
+                <div class="reveal-up ${delay} bg-white rounded-2xl p-8 shadow-xl border border-cream text-center relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-orange transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                    <div class="w-20 h-20 mx-auto bg-cream rounded-full flex items-center justify-center mb-6">
+                        <i data-lucide="utensils" class="text-terracotta w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-dark mb-2">${size.name}</h3>
+                    <p class="text-orange font-bold text-lg mb-4">${size.weight}</p>
+                    <p class="text-dark/70 mb-6 min-h-[48px]">${size.desc}</p>
+                    <div class="flex justify-between items-center pt-6 border-t border-gray-100">
+                        <span class="text-dark font-medium flex items-center gap-2">
+                            <i data-lucide="info" class="text-terracotta w-4 h-4"></i> ${size.serves}
+                        </span>
+                        <span class="font-heading text-2xl font-bold text-terracotta">${size.price}</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Render Socials
+        const socialGrid = document.getElementById('social-grid');
+        socialImages.forEach((img, index) => {
+            socialGrid.innerHTML += `
+                <div class="min-w-[280px] md:min-w-[320px] aspect-square rounded-2xl overflow-hidden relative group snap-center flex-shrink-0 hover:-translate-y-2 transition-transform duration-300">
+                    <img src="${img}" alt="Social Post" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <i data-lucide="instagram" class="text-white w-12 h-12"></i>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Populate Select Form
+        const biryaniSelect = document.getElementById('biryani-select');
+        menuData.filter(item => item.category !== 'Curries').forEach(item => {
+            biryaniSelect.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+        });
+
+        // Set Copyright Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // --- INTERACTIVITY ---
+
+        // Menu Filtering Logic
+        function filterMenu(category) {
+            // Update tabs styling
+            document.querySelectorAll('.menu-tab').forEach(tab => {
+                if(tab.id === `tab-${category}`) {
+                    tab.className = "menu-tab px-8 py-3 rounded-full font-heading text-lg font-semibold transition-all bg-terracotta text-cream shadow-lg scale-105";
+                } else {
+                    tab.className = "menu-tab px-8 py-3 rounded-full font-heading text-lg font-semibold transition-all bg-cream text-dark hover:bg-orange hover:text-cream";
+                }
+            });
+
+            // Render items
+            const menuGrid = document.getElementById('menu-grid');
+            menuGrid.style.opacity = '0'; // Fade out
+            
+            setTimeout(() => {
+                menuGrid.innerHTML = '';
+                const filtered = menuData.filter(item => item.category === category);
+                filtered.forEach(item => {
+                    menuGrid.innerHTML += `
+                        <div class="flex flex-col border-b border-gray-200 pb-6 group">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-heading text-xl font-bold text-dark group-hover:text-orange transition-colors">${item.name}</h3>
+                            </div>
+                            <p class="text-dark/70 text-sm leading-relaxed pr-8">${item.desc}</p>
+                        </div>
+                    `;
+                });
+                menuGrid.style.opacity = '1'; // Fade in
+                lucide.createIcons(); // Re-init icons if any exist in the injected HTML
+            }, 200);
+        }
+
+        // Initialize default menu
+        filterMenu('Chicken');
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let menuOpen = false;
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                mobileMenu.classList.add('menu-open');
+                menuBtn.innerHTML = '<i data-lucide="x"></i>';
+            } else {
+                mobileMenu.classList.remove('menu-open');
+                menuBtn.innerHTML = '<i data-lucide="menu"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', () => {
+            if(menuOpen) toggleMenu();
+        }));
+
+        // Form Submission
+        document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('success-message').classList.remove('hidden');
+        });
+
+        // --- SCROLL ANIMATIONS (Intersection Observer) ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Initialize Lucide Icons globally
+        lucide.createIcons();
+    </script>
+</body>
+</html>
